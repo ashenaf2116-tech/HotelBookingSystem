@@ -1,5 +1,4 @@
 package models;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -17,12 +16,16 @@ public class Booking implements Serializable {
         this.room = room;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        this.totalPrice = room.getPricePerNight() *
-                (checkOut.toEpochDay() - checkIn.toEpochDay());
+        this.totalPrice = room.getPricePerNight() * (checkOut.toEpochDay() - checkIn.toEpochDay());
     }
 
+    public int getBookingId() { return bookingId; }
+    public Customer getCustomer() { return customer; }
+    public Room getRoom() { return room; }
+    public double getTotalPrice() { return totalPrice; }
+
     public void displayInfo() {
-        System.out.println("Booking#" + bookingId + "|" + customer.getName() + " | Room" + room.getRoomNumber()
-                + " | Total:$" + totalPrice);
+        System.out.println("Booking #" + bookingId + " | " + customer.getName() +
+            " | Room " + room.getRoomNumber() + " | Total: $" + totalPrice);
     }
 }
