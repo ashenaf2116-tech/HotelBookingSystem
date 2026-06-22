@@ -17,3 +17,12 @@ public class FileManager {
             System.out.println("File error: " + e.getMessage());
         }
     }
+
+    public static List<Booking> loadBookings() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE))) {
+            return (List<Booking>) ois.readObject();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+}
