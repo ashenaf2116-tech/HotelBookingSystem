@@ -9,7 +9,7 @@
 | Name | Role | Contribution |
 |------|------|-------------|
 | Ashenaf | Team Lead | `Main.java`, `Room.java`, project structure |
-| Dagamd | Developer | `Customer.java`, `Booking.java` |
+| Dagimawi dirba| Developer | `Customer.java`, `Booking.java` |
 | Dagmm | Developer | `SingleRoom.java`, `DoubleRoom.java`, `SuiteRoom.java` |
 | Friend 3 | Developer | `RoomNotFoundException.java`, `PaymentException.java`, `FileManager.java` |
 | Friend 4 | Developer | `DatabaseManager.java` |
