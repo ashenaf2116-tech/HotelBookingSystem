@@ -41,22 +41,22 @@ public class Main {
         }
     }
 
-    static void setupRooms() {
-        rooms.add(new SingleRoom(101, "Addis Ababa"));
-        rooms.add(new DoubleRoom(102, "Addis Ababa"));
-        rooms.add(new SuiteRoom(103, "Addis Ababa"));
-        rooms.add(new SingleRoom(201, "Hawassa"));
-        rooms.add(new DoubleRoom(202, "Hawassa"));
-        rooms.add(new SuiteRoom(203, "Dire Dawa"));
-    }
+   static void setupRooms() {
+    rooms.add(new SingleRoom(101, "gitHilton - Addis Ababa"));
+    rooms.add(new DoubleRoom(102, "Sheraton - Addis Ababa"));
+    rooms.add(new SuiteRoom(103, "Marriott - Addis Ababa"));
+    rooms.add(new SingleRoom(201, "Haile Resort - Hawassa"));
+    rooms.add(new DoubleRoom(202, "Lewi Resort - Hawassa"));
+    rooms.add(new SuiteRoom(203, "Samrat Hotel - Dire Dawa"));
+}
 
     static void searchByLocation() throws RoomNotFoundException, PaymentException {
-        System.out.print("Enter location (Addis Ababa / Hawassa / Dire Dawa): ");
+        System.out.print("Enter city (Addis Ababa / Hawassa / Dire Dawa): ");
         String loc = scanner.nextLine();
         Room.search(loc);
         boolean found = false;
         for (Room r : rooms) {
-            if (r.getLocation().equalsIgnoreCase(loc) && r.isAvailable()) {
+            if (r.getLocation().toLowerCase().contains(loc.toLowerCase()) && r.isAvailable())  {
                 r.displayInfo();
                 found = true;
             }
