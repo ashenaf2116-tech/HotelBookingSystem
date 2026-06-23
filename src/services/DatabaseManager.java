@@ -32,4 +32,28 @@ public class DatabaseManager {
             System.out.println("DB error: " + e.getMessage());
         }
     }
+
+    public static void loadBookings() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(URL);
+
+            String query = "SELECT * FROM bookings";
+            ResultSet rs = conn.createStatement().executeQuery(query);
+
+            System.out.println("--- Bookings from Database ---");
+            boolean found = false;
+            while (rs.next()) {
+                found = true;
+                System.out.println("Booking #" + rs.getInt("id") +
+                    " | Customer: " + rs.getString("customer") +
+                    " | Room: " + rs.getInt("room") +
+                    " | Total: $" + rs.getDouble("total"));
+            }
+            if (!found) System.out.println("No bookings found in database.");
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("DB error: " + e.getMessage());
+        }
+    }
 }

@@ -133,7 +133,6 @@ public class Main {
     }
 
     static void viewBookings() {
-        if (bookings.isEmpty()) { System.out.println("No bookings yet."); return; }
-        bookings.forEach(Booking::displayInfo);
+        DatabaseManager.loadBookings();
     }
 }
