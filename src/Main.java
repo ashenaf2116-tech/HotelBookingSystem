@@ -50,42 +50,56 @@ public class Main {
         rooms.add(new SuiteRoom(203, "Dire Dawa"));
     }
 
-    static void searchByLocation() {
-        System.out.print("Enter location: ");
+    static void searchByLocation() throws RoomNotFoundException, PaymentException {
+        System.out.print("Enter location (Addis Ababa / Hawassa / Dire Dawa): ");
         String loc = scanner.nextLine();
         Room.search(loc);
-        rooms.stream()
-            .filter(r -> r.getLocation().equalsIgnoreCase(loc) && r.isAvailable())
-            .forEach(Room::displayInfo);
+        boolean found = false;
+        for (Room r : rooms) {
+            if (r.getLocation().equalsIgnoreCase(loc) && r.isAvailable()) {
+                r.displayInfo();
+                found = true;
+            }
+        }
+        if (!found) { System.out.println("No available rooms in " + loc); return; }
+        System.out.print("Enter room number to book (or 0 to skip): ");
+        int choice = scanner.nextInt(); scanner.nextLine();
+        if (choice != 0) bookRoomByNumber(choice);
     }
 
-    static void searchByPrice() {
+    static void searchByPrice() throws RoomNotFoundException, PaymentException {
         System.out.print("Enter max price: ");
-        double max = scanner.nextDouble();
+        double max = scanner.nextDouble(); scanner.nextLine();
         Room.search(max);
-        rooms.stream()
-            .filter(r -> r.getPricePerNight() <= max && r.isAvailable())
-            .forEach(Room::displayInfo);
+        boolean found = false;
+        for (Room r : rooms) {
+            if (r.getPricePerNight() <= max && r.isAvailable()) {
+                r.displayInfo();
+                found = true;
+            }
+        }
+        if (!found) { System.out.println("No rooms under $" + max); return; }
+        System.out.print("Enter room number to book (or 0 to skip): ");
+        int choice = scanner.nextInt(); scanner.nextLine();
+        if (choice != 0) bookRoomByNumber(choice);
     }
 
     static void comparePrices() {
-        System.out.println("--- Price Comparison ---");
+        System.out.println("--- Price Comparison (Cheapest to Most Expensive) ---");
         rooms.stream()
             .sorted(Comparator.comparingDouble(Room::getPricePerNight))
             .forEach(Room::displayInfo);
     }
 
     static void bookRoom() throws RoomNotFoundException, PaymentException {
-        System.out.print("Your name: ");
-        String name = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Phone: ");
-        String phone = scanner.nextLine();
-        System.out.print("Room number: ");
-        int roomNum = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("--- Available Rooms ---");
+        rooms.stream().filter(Room::isAvailable).forEach(Room::displayInfo);
+        System.out.print("Enter room number to book (101-203): ");
+        int roomNum = scanner.nextInt(); scanner.nextLine();
+        bookRoomByNumber(roomNum);
+    }
 
+    static void bookRoomByNumber(int roomNum) throws RoomNotFoundException, PaymentException {
         Room selected = rooms.stream()
             .filter(r -> r.getRoomNumber() == roomNum)
             .findFirst()
@@ -94,6 +108,12 @@ public class Main {
         if (!selected.isAvailable())
             throw new RoomNotFoundException("Room " + roomNum + " is not available!");
 
+        System.out.print("Your name: ");
+        String name = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Phone: ");
+        String phone = scanner.nextLine();
         System.out.print("Card number (16 digits): ");
         String card = scanner.nextLine();
         if (card.length() != 16)
@@ -108,7 +128,7 @@ public class Main {
         FileManager.saveBooking(booking);
         DatabaseManager.saveBooking(booking);
 
-        System.out.println("Booking confirmed!");
+        System.out.println("✓ Booking confirmed!");
         booking.displayInfo();
     }
 
